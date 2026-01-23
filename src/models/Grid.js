@@ -35,7 +35,7 @@ export class Grid {
         shape.forEach((row, rowIndex) => {
             row.forEach((cellValue, colIndex) => {
                 //Si cette partie du block est vide on met a jour la cellule de la grille
-                if(cell !== 0) {
+                if(cellValue !== 0) {
                     this.cells[startY + rowIndex][startX + colIndex] = value;
                 }
             });
