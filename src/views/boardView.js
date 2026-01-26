@@ -1,8 +1,13 @@
+import {drawShape} from './blockView.js';
+import {resize} from './resize.js';
+
 export class BoardView {
   constructor(canvas, gridModel, options) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.grid = gridModel;
+
+    this.gridHeight = 0;
 
     this.options = Object.assign(
       {
@@ -24,7 +29,6 @@ export class BoardView {
   }
 
   setup() {
-    // ensure resize observer is a function that adjusts canvas size
     this.resizeObserver = () => this.resize();
     this.applyPixelRatio();
     this.resizeObserver();
@@ -46,27 +50,11 @@ export class BoardView {
 
   applyPixelRatio() {
     this.pixelRatio = Math.max(1, window.devicePixelRatio || 1);
-    // scale context so drawing coordinates are in CSS pixels
     this.ctx.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
   }
 
   resize() {
-    const cols = this.grid.cols;
-    const rows = this.grid.rows;
-    const cell = this.options.cellSize;
-    const padding = this.options.padding;
-
-    const width = cols * (cell + padding) + padding;
-    const height = rows * (cell + padding) + padding;
-    const cssW = width;
-    const cssH = height;
-
-    this.canvas.style.width = cssW + "px";
-    this.canvas.style.height = cssH + "px";
-
-    this.canvas.width = Math.round(cssW * this.pixelRatio);
-    this.canvas.height = Math.round(cssH * this.pixelRatio);
-
+    this.gridHeight = resize(this.canvas, this.grid, this.options, this.pixelRatio);
     this.applyPixelRatio();
     this.render();
   }
@@ -75,7 +63,6 @@ export class BoardView {
     const ctx = this.ctx;
     ctx.save();
     ctx.fillStyle = this.options.bgColor;
-    // draw using CSS pixel coordinates (context is scaled)
     ctx.fillRect(
       0,
       0,
@@ -85,10 +72,35 @@ export class BoardView {
     ctx.restore();
   }
 
-  render() {
+  render(inputController = null) {
     this.clear();
     this.drawGrid();
     this.drawBlocks();
+    this.drawTray();
+
+    if (inputController && inputController.draggingBlock) {
+      const { draggingBlock, mouseX, mouseY } = inputController;
+      const size = this.options.cellSize;
+
+      const startX = mouseX - (draggingBlock.shape[0].length * size) / 2;
+      const startY = mouseY - (draggingBlock.shape.length * size) / 2;
+
+      drawShape(this.ctx, draggingBlock.shape, startX, startY, size, this.options.padding, draggingBlock.color, 0.7);
+    }
+  }
+
+  drawTray() {
+    const trayY = this.gridHeight + 20; // Start below the grid
+    const slotWidth = this.canvas.width / (this.pixelRatio * 3);
+    const cellSize = this.options.cellSize * 0.8; // Draw slightly smaller in tray
+
+    this.grid.offeredBlocks.forEach((block, i) => {
+      if (!block) return;
+      // Center the shape within its 1/3 width slot
+      const startX = i * slotWidth + (slotWidth / 2) - (block.shape[0].length * cellSize) / 2;
+
+      drawShape(this.ctx, block.shape, startX, trayY, cellSize, this.options.padding, block.color);
+    });
   }
 
   drawGrid() {
@@ -119,7 +131,6 @@ export class BoardView {
         ctx.lineTo(pdg + cols * (cell + pdg), y);
         ctx.stroke();
       }
-      // vertical lines
       for (let c = 0; c <= cols; c++) {
         const x = pdg + c * (cell + pdg) + 0.5;
         ctx.beginPath();
