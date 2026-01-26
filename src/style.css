@@ -56,8 +56,15 @@ body {
   justify-content: center;
   place-items: center;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   overflow-x: hidden;
+}
+
+
+
+#page {
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
@@ -112,12 +119,13 @@ button:focus-visible {
 #navbar {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 30px;
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
   width: 100%;
   top: 0;
+  position: fixed;
 }
 
 @media (prefers-color-scheme: light) {
