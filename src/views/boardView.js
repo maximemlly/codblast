@@ -82,24 +82,45 @@ export class BoardView {
       const { draggingBlock, mouseX, mouseY } = inputController;
       const size = this.options.cellSize;
 
-      const startX = mouseX - (draggingBlock.shape[0].length * size) / 2;
-      const startY = mouseY - (draggingBlock.shape.length * size) / 2;
+      // Calculate the top-left offset
+      const offsetX = (draggingBlock.shape[0].length * size) / 2;
+      const offsetY = (draggingBlock.shape.length * size) / 2;
 
-      drawShape(this.ctx, draggingBlock.shape, startX, startY, size, this.options.padding, draggingBlock.color, 0.7);
+      // 1. Draw the "Ghost" (Snapped to Grid)
+      const cell = this.screenToCell(mouseX - offsetX, mouseY - offsetY);
+      if (cell && this.grid.placeBlockCheck(draggingBlock.shape, cell.col, cell.row)) {
+        const ghostX = this.options.padding + cell.col * (size + this.options.padding);
+        const ghostY = this.options.padding + cell.row * (size + this.options.padding);
+        drawShape(this.ctx, draggingBlock.shape, ghostX, ghostY, size, this.options.padding, draggingBlock.color, 0.3);
+      }
+
+      // 2. Draw the "Held" Block (Following Mouse)
+      drawShape(this.ctx, draggingBlock.shape, mouseX - offsetX, mouseY - offsetY, size, this.options.padding, draggingBlock.color, 0.7);
     }
   }
 
   drawTray() {
-    const trayY = this.gridHeight + 20; // Start below the grid
-    const slotWidth = this.canvas.width / (this.pixelRatio * 3);
-    const cellSize = this.options.cellSize * 0.8; // Draw slightly smaller in tray
+    const trayY = this.gridHeight + 20;
+    const slotWidth = (this.canvas.width / this.pixelRatio) / 3;
+    const cellSize = this.options.cellSize * 0.8;
+
+    if (!this.grid.offeredBlocks) return; // Safety check
 
     this.grid.offeredBlocks.forEach((block, i) => {
       if (!block) return;
-      // Center the shape within its 1/3 width slot
-      const startX = i * slotWidth + (slotWidth / 2) - (block.shape[0].length * cellSize) / 2;
 
-      drawShape(this.ctx, block.shape, startX, trayY, cellSize, this.options.padding, block.color);
+      const blockWidth = block.shape[0].length * cellSize;
+      const startX = i * slotWidth + (slotWidth / 2) - (blockWidth / 2);
+
+      drawShape(
+          this.ctx,
+          block.shape,
+          startX,
+          trayY,
+          cellSize,
+          this.options.padding,
+          block.color
+      );
     });
   }
 
@@ -123,7 +144,6 @@ export class BoardView {
     if (opt.showGridLines) {
       ctx.strokeStyle = opt.lineColor;
       ctx.lineWidth = 1;
-      // horizontal lines
       for (let r = 0; r <= rows; r++) {
         const y = pdg + r * (cell + pdg) + 0.5;
         ctx.beginPath();
@@ -156,11 +176,9 @@ export class BoardView {
         const x = pdg + c * (cell + pdg);
         const y = pdg + r * (cell + pdg);
 
-        // block background
         ctx.fillStyle = block.color || "#eee";
         ctx.fillRect(x, y, cell, cell);
 
-        // block border / highlight
         ctx.strokeStyle = block.borderColor || "#222";
         ctx.lineWidth = 2;
         ctx.strokeRect(x + 1, y + 1, cell - 2, cell - 2);
@@ -173,9 +191,11 @@ export class BoardView {
     const opt = this.options;
     const cell = opt.cellSize;
     const pdg = opt.padding;
-    // px,py are in canvas pixels already scaled by width/height mapping in click
+
+    // Math.floor is critical here for grid alignment
     const col = Math.floor((px - pdg) / (cell + pdg));
     const row = Math.floor((py - pdg) / (cell + pdg));
+
     if (row < 0 || row >= this.grid.rows || col < 0 || col >= this.grid.cols)
       return null;
     return { row, col };

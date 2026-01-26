@@ -43,37 +43,48 @@ export class InputController {
         if (!this.draggingBlock) return;
         const rect = this.view.canvas.getBoundingClientRect();
 
-        this.mouseX = e.clientX - rect.left;
-        this.mouseY = e.clientY - rect.top;
+        // Convert screen pixels to internal canvas pixels
+        const mouseX = (e.clientX - rect.left) * (this.view.canvas.width / rect.width) / this.view.pixelRatio;
+        const mouseY = (e.clientY - rect.top) * (this.view.canvas.height / rect.height) / this.view.pixelRatio;
+
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+
+        // Calculate how many cells to shift to center the block on the mouse
+        const offsetX = (this.draggingBlock.shape[0].length * this.view.options.cellSize) / 2;
+        const offsetY = (this.draggingBlock.shape.length * this.view.options.cellSize) / 2;
+
+        // Find the cell at the TOP-LEFT of the block, not the center
+        const dropCell = this.view.screenToCell(mouseX - offsetX, mouseY - offsetY);
 
         this.view.render(this);
-
-        const cell = this.view.screenToCell(this.mouseX, this.mouseY);
-        if (cell) {
-            this.view.highlightCell(cell.row, cell.col);
+        if (dropCell) {
+            // Highlight where the TOP-LEFT of the block will land
+            this.view.highlightCell(dropCell.row, dropCell.col);
         }
     }
 
     handleUp(e) {
         if (!this.draggingBlock) return;
 
-        const rect = this.view.canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        const cell = this.view.screenToCell(mouseX, mouseY);
+        const offsetX = (this.draggingBlock.shape[0].length * this.view.options.cellSize) / 2;
+        const offsetY = (this.draggingBlock.shape.length * this.view.options.cellSize) / 2;
+
+        // Use the exact same math as handleMove
+        const cell = this.view.screenToCell(this.mouseX - offsetX, this.mouseY - offsetY);
 
         if (cell) {
             const shape = this.draggingBlock.shape;
-            const color = this.draggingBlock.color;
-
             if (this.state.grid.placeBlockCheck(shape, cell.col, cell.row)) {
-                this.state.grid.placeBlock(shape, cell.col, cell.row, color);
+                // Ensure you pass the color from the block object
+                this.state.grid.placeBlock(shape, cell.col, cell.row, this.draggingBlock.color);
                 this.state.offeredBlocks[this.dragIndex] = null;
 
+                // Refresh tray if empty
                 if (this.state.offeredBlocks.every(b => b === null)) {
                     this.state.refreshBlocks();
+                    this.state.grid.offeredBlocks = this.state.offeredBlocks;
                 }
-
                 this.gameController.handleTurnEnd();
             }
         }
