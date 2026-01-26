@@ -1,5 +1,4 @@
 import "./style.css";
-import { Game } from "./game";
 
 document.querySelector("#app").innerHTML = `
   <div id="title">
