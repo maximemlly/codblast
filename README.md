@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="public/logo.png" alt="Bannière du Jeu" width="50%">
+</div>
+<br>
+
 # COD'BLAST
 ### Par Emery P. Maxime M. et Esteban Q.
 
