@@ -1,6 +1,5 @@
 import "./style.css";
-import { Grid } from "./models/Grid.js";
-import { BoardView } from "./views/boardView.js";
+import { Game } from "./game";
 
 document.querySelector("#app").innerHTML = `
   <div id="title">
@@ -9,4 +8,4 @@ document.querySelector("#app").innerHTML = `
   </div>
   <p id="subtitle">Current highscore: mettre valeur dynamique</p>
   <button id="start-button">Start Game</button>
-  `
+  `;
