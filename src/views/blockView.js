@@ -11,7 +11,7 @@ export function drawShape(ctx, shape, startX, startY, endX, endY, cellSize, padd
         row.forEach((value, colIndex) => {
             if(value > 0) {
                 const x = startX + colIndex * (cellSize + padding);
-                const y = startY + colIndex * (cellSize + padding);
+                const y = startY + rowIndex * (cellSize + padding);
 
                 ctx.fillRect(x, y, cellSize, cellSize);
 
