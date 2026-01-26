@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#title {
+  margin-bottom: 5rem;
+}
+
 #title p {
   font-family: "Geo";
   margin: 0;
@@ -48,9 +52,12 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   place-items: center;
-  min-width: 320px;
+  width: 100vw;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -100,6 +107,17 @@ button:focus-visible {
   right: 1rem;
   font-size: 0.8rem;
   color: #888;
+}
+
+#navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  width: 100%;
+  top: 0;
 }
 
 @media (prefers-color-scheme: light) {

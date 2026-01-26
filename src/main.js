@@ -9,5 +9,4 @@ document.querySelector("#app").innerHTML = `
   </div>
   <p id="subtitle">Current highscore: mettre valeur dynamique</p>
   <button id="start-button">Start Game</button>
-  <p id="credits">Made with ❤️ by <a href="https://github.com/devilishlyney/">Emery</a>, <a href="https://github.com/maximemlly/">Maxime</a> and <a href="https://github.com/thegesse/">Esteban</a></p>
   `
