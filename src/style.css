@@ -52,19 +52,11 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  place-items: center;
+  flex-direction: column; /* Stack navbar on top */
+  align-items: center;    /* Horizontal center */
   width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
-}
-
-
-
-#page {
-  display: flex;
-  flex-direction: column;
+  min-height: 100vh;
+  background-color: #242424;
 }
 
 h1 {
@@ -73,10 +65,12 @@ h1 {
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  flex-grow: 1;           /* Take up remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertical center for the game */
+  align-items: center;
 }
 
 .card {
@@ -119,13 +113,12 @@ button:focus-visible {
 #navbar {
   list-style-type: none;
   margin: 0;
-  padding: 30px;
+  padding: 0;
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
   width: 100%;
   top: 0;
-  position: fixed;
 }
 
 @media (prefers-color-scheme: light) {
@@ -139,4 +132,12 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+#gameCanvas {
+  display: block;
+  margin: 0 auto;
+  /* Ensure it has a base size if the JS resize fails initially */
+  min-width: 300px;
+  min-height: 300px;
 }
