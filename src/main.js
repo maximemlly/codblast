@@ -8,4 +8,4 @@ document.querySelector("#app").innerHTML = `
   </div>
   <p id="subtitle">Current highscore: mettre valeur dynamique</p>
   <button id="start-button">Start Game</button>
-  `;
+`;
