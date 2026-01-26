@@ -17,16 +17,4 @@ export class Block {
     get color() {
         return this.#color;
     }
-
-    //formes faites par l'ia, accessible avec Block.shapes.SQUARE_2x2, par exemple
-    static get shapes() {
-        return {
-            SINGLE: [[1]],
-            HORIZONTAL_3: [[1, 1, 1]],
-            VERTICAL_3: [[1], [1], [1]],
-            SQUARE_2x2: [[1, 1], [1, 1]],
-            L_SHAPE: [[1, 0], [1, 0], [1, 1]],
-            T_SHAPE: [[1, 1, 1], [0, 1, 0]]
-        };
-    }
 }

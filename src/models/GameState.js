@@ -1,59 +1,80 @@
-import {Grid} from "./Grid.js";
-import {Block} from "./Block.js";
+// models/gameState.js
+import { Grid } from "./Grid.js";
+// Import all your specific block classes here
+import {Horizontal} from "./Horizontal.js";
+import {LShape} from "./LShape.js";
+import {Single} from "./Single.js";
+import {SquareBlock} from "./SquareBlock.js";
+import {TShape} from "./TShape.js";
+import {Vertical} from "./Vertical.js";
+
 
 export class GameState {
     constructor() {
+        // Initialise la grille de jeu
         this.grid = new Grid();
         this.score = 0;
         this.gameOver = false;
-        //Contient 3 blocks dans bar
+
+        // Contient les 3 blocs disponibles en bas
         this.offeredBlocks = [null, null, null];
-        //donne 3 blocks au joueur des le debuts
+
+        // Donne 3 blocs au joueur dès le début
         this.refreshBlocks();
     }
 
-    //Redonne au joueurs des blocks une fois qu'il a epuiser son stock
+    /**
+     * Remplit les emplacements vides avec de nouveaux blocs aléatoires
+     */
     refreshBlocks() {
-        //A changer les couleurs
+        // Liste des classes de blocs disponibles
+        const blockClasses = [Horizontal, LShape, Single, SquareBlock, TShape, Vertical];
         const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF'];
-        const shapeKeys = Object.keys(Block.shapes);
 
         for (let i = 0; i < 3; i++) {
-            //Remplace seulement les blocks qui sont utiliser (donc null)
+            // Remplace seulement les blocs qui sont utilisés (donc null)
             if (this.offeredBlocks[i] === null) {
-                const randomShape = Block.shapes[shapeKeys[Math.floor(Math.random() * shapeKeys.length)]];
+                // Choisit une classe et une couleur au hasard
+                const RandomBlockClass = blockClasses[Math.floor(Math.random() * blockClasses.length)];
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-                //Cree nouveaux blocks et les stockes dans l'inventaire
-                this.offeredBlocks[i] = new Block(randomColor, randomShape);
+                // Crée une nouvelle instance de la classe de bloc choisie
+                this.offeredBlocks[i] = new RandomBlockClass(randomColor);
             }
         }
     }
 
-    //Regarde si les Blocks peuvent etre placer sur la grille
+    /**
+     * Vérifie si le joueur peut encore placer au moins un des blocs disponibles
+     */
     checkGameOver() {
-        //Regarde seulement les Blocks non jouer
+        // Regarde seulement les blocs encore non joués
         const playableBlocks = this.offeredBlocks.filter(b => b !== null);
 
-        // Si tout les blocks sont jouer et on est pas coincer
+        // Si tous les blocs sont joués, on n'est pas encore en Game Over (refreshBlocks viendra après)
         if (playableBlocks.length === 0) return false;
 
+        // Parcourt chaque bloc restant
         for (const block of playableBlocks) {
+            // Parcourt chaque case de la grille pour tester si le bloc rentre
             for (let row = 0; row < this.grid.size; row++) {
                 for (let col = 0; col < this.grid.size; col++) {
-                    // Utilise la logic definie dans le Grid.js
+                    // Utilise la logique définie dans Grid.js pour tester la collision
                     if (this.grid.placeBlockCheck(block.shape, col, row)) {
-                        return false; // A trouver un placement valide
+                        return false; // Un placement est possible, le jeu continue
                     }
                 }
             }
         }
 
+        // Aucun bloc ne rentre nulle part : Fin de partie
         this.gameOver = true;
         return true;
     }
 
-    //Met a jour le score, a changer peut etre
+    /**
+     * Met à jour le score du joueur
+     */
     updateScore(points) {
         this.score += points;
     }
