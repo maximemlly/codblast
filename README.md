@@ -3,7 +3,7 @@
 </div>
 <br>
 
-# COD'BLAST
+# <img src="public/favicon.ico" alt="Icone du jeu" width="2.3%"> COD'BLAST
 ### Par Emery P. Maxime M. et Esteban Q.
 
 <p align="left">
