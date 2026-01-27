@@ -1,23 +1,17 @@
-export function drawShape(ctx, shape, startX, startY, endX, endY, cellSize, padding, color, alpha = 1.0) {
-
-    if (!shape || !Array.isArray(shape)) return;
-
+export function drawShape(ctx, shape, x, y, size, padding, color, alpha = 1) {
     ctx.save();
-
     ctx.globalAlpha = alpha;
     ctx.fillStyle = color;
 
     shape.forEach((row, rowIndex) => {
-        row.forEach((value, colIndex) => {
-            if(value > 0) {
-                const x = startX + colIndex * (cellSize + padding);
-                const y = startY + rowIndex * (cellSize + padding);
+        row.forEach((cell, colIndex) => {
+            if(cell !== 0) {
+                const drawX = x + colIndex * (size + padding);
+                const drawY = y + rowIndex * (size + padding);
+                ctx.fillRect(drawX, drawY, size, size);
 
-                ctx.fillRect(x, y, cellSize, cellSize);
-
-                ctx.strokeStyle = "rgba(0, 0, 0, 0.2)"; //default values to change later on
-                ctx.lineWidth = 1;
-                ctx.strokeRect(x, y, cellSize, cellSize);
+                ctx.strokeStyle = "rgba(0, 0, 0, 0.1)"; //default values to change later on
+                ctx.strokeRect(drawX, drawY, size, size);
             }
         });
     });

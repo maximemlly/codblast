@@ -82,24 +82,47 @@ export class BoardView {
       const { draggingBlock, mouseX, mouseY } = inputController;
       const size = this.options.cellSize;
 
-      const startX = mouseX - (draggingBlock.shape[0].length * size) / 2;
-      const startY = mouseY - (draggingBlock.shape.length * size) / 2;
+      const offsetX = (draggingBlock.shape[0].length * size) / 2;
+      const offsetY = (draggingBlock.shape.length * size) / 2;
 
+      // Calculate where the block is being held
+      const startX = mouseX - offsetX;
+      const startY = mouseY - offsetY;
+
+      const cell = this.screenToCell(startX, startY);
+
+      // Draw Ghost (Preview)
+      if (cell && this.grid.placeBlockCheck(draggingBlock.shape, cell.col, cell.row)) {
+        const ghostX = this.options.padding + cell.col * (size + this.options.padding);
+        const ghostY = this.options.padding + cell.row * (size + this.options.padding);
+        drawShape(this.ctx, draggingBlock.shape, ghostX, ghostY, size, this.options.padding, draggingBlock.color, 0.3);
+      }
+
+      // Draw Actual Dragging Block
       drawShape(this.ctx, draggingBlock.shape, startX, startY, size, this.options.padding, draggingBlock.color, 0.7);
     }
   }
 
   drawTray() {
     const trayY = this.gridHeight + 20; // Start below the grid
-    const slotWidth = this.canvas.width / (this.pixelRatio * 3);
+    const slotWidth = (this.canvas.width / this.pixelRatio) / 3;
     const cellSize = this.options.cellSize * 0.8; // Draw slightly smaller in tray
+
+    if (!this.grid.offeredBlocks) return;
 
     this.grid.offeredBlocks.forEach((block, i) => {
       if (!block) return;
-      // Center the shape within its 1/3 width slot
-      const startX = i * slotWidth + (slotWidth / 2) - (block.shape[0].length * cellSize) / 2;
-
-      drawShape(this.ctx, block.shape, startX, trayY, cellSize, this.options.padding, block.color);
+      const blockWidth = block.shape[0].length * cellSize;
+      const startX = i * slotWidth + (slotWidth / 2) - (blockWidth / 2);
+      drawShape(
+          this.ctx,
+          block.shape,
+          startX,
+          trayY,
+          cellSize,
+          this.options.padding,
+          block.color
+      );
     });
   }
 
