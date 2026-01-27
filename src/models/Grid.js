@@ -89,4 +89,20 @@ export class Grid {
 
         return { rows: clearedRows, cols: clearedCols };
     }
+    // Inside Grid.js
+    // Inside Grid.js
+    canFitAnywhere(shape) {
+        if (!shape) return false;
+
+        // Scan every row and column of the 8x8 grid
+        for (let r = 0; r < this.size; r++) {
+            for (let c = 0; c < this.size; c++) {
+                // Check if THIS specific shape can fit at THIS specific coordinate
+                if (this.placeBlockCheck(shape, c, r)) {
+                    return true; // Found a valid move!
+                }
+            }
+        }
+        return false; // No valid move found for this shape
+    }
 }

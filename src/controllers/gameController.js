@@ -5,28 +5,36 @@ export class GameController {
         this.view = view;
     }
 
+    // Inside GameController.js
+    // Inside GameController.js
     handleTurnEnd() {
-        // 1. Check and clear lines in the model
-        const cleared = this.state.grid.checkAndClearLines();
+        // 1. Clear lines first (this might open up new moves!)
+        this.state.grid.checkAndClearLines();
 
-        // 2. Update score if lines were cleared
-        const totalCleared = cleared.rows.length + cleared.cols.length;
-        if (totalCleared > 0) {
-            this.state.score += totalCleared * 100; // Example scoring
+        // 2. Refresh tray if empty
+        if (this.state.offeredBlocks.every(b => b === null)) {
+            this.state.refreshBlocks();
+            this.state.grid.offeredBlocks = this.state.offeredBlocks; // Sync
         }
 
-        // 3. Check if the tray is empty to refresh it
-        // Filter out nulls to see if any real blocks remain
-        const remainingBlocks = this.state.offeredBlocks.filter(b => b !== null);
+        // 3. THE LOSS CHECK
+        // Filter out nulls so we only check the blocks still in the tray
+        const playableBlocks = this.state.offeredBlocks.filter(block => block !== null);
 
-        if (remainingBlocks.length === 0) {
-            console.log("Tray empty! Refreshing...");
-            this.state.refreshBlocks(); // Generates new random blocks
-            // IMPORTANT: Sync the new blocks to the grid's reference
-            this.state.grid.offeredBlocks = this.state.offeredBlocks;
+        // If there are blocks left, can ANY of them fit?
+        const canStillPlay = playableBlocks.some(block =>
+            this.state.grid.canFitAnywhere(block.shape)
+        );
+
+        if (!canStillPlay) {
+            this.triggerGameOver();
         }
 
-        // 4. Final render update
         this.view.render();
     }
-}
+
+    triggerGameOver() {
+        console.log("GAME OVER triggered");
+        alert(`Game Over! Final Score: ${this.state.score}`);
+        window.location.href = "index.html"; // Redirect to menu
+    }}
