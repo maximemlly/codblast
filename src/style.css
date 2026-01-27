@@ -60,11 +60,21 @@ body {
   overflow-x: hidden;
 }
 
+#about-logo {
+  align-self: center;
+  width: 25vw;
+}
 
+p {
+  max-width: 75vw;
+}
 
 #page {
   display: flex;
   flex-direction: column;
+  margin-top: 8rem;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
 }
 
 h1 {
@@ -79,13 +89,7 @@ h1 {
   text-align: center;
 }
 
-.card {
-  padding: 2em;
-}
 
-.read-the-docs {
-  color: #888;
-}
 
 button {
   border-radius: 8px;
@@ -108,6 +112,17 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+h2 {
+  font-family: "Bungee";
+}
+
+span {
+  background-image: linear-gradient(to bottom, #646cff, white);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 #credits {
   position: fixed;
   bottom: 1rem;
@@ -120,12 +135,14 @@ button:focus-visible {
   list-style-type: none;
   margin: 0;
   padding: 30px;
+  padding-bottom: 90px;
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
   width: 100%;
   top: 0;
   position: fixed;
+  background-image: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0));
 }
 
 @media (prefers-color-scheme: light) {
