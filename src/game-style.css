@@ -1,29 +1,45 @@
-body {
+/* 1. Global Page Lock */
+html, body {
     margin: 0;
-    background-color: #0b0b0b; /* Match your bgColor option */
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    /* Stops the "pull-to-refresh" and scrolling bounce */
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+    position: fixed;
+
+    background-color: #0b0b0b;
     color: white;
+    font-family: sans-serif;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh;
 }
 
-#game-canvas {
-    /* This ensures the canvas takes up space */
-    width: 90vw;
-    max-width: 500px;
-    height: 70vh;
-    border: 1px solid #333;
-    display: block;
+/* 2. Score/Header Area */
+#stats-container {
+    padding: 10px;
+    font-size: 1.2rem;
+    z-index: 10;
 }
 
+/* 3. The Canvas */
 #game-canvas {
-    width: 100%;
-    max-width: 500px; /* Adjust based on your preference */
-    height: 600px;    /* Give it a fixed height or use vh */
+    /* Use 'touch-action: none' to ensure drag events go to JS, not the browser */
+    touch-action: none;
     display: block;
     margin: 0 auto;
+
+    /* Responsive sizing */
+    width: 95vw;
+    max-width: 500px;
+    /* Avoid fixed height; let the resize.js script determine the height based on the grid + tray */
+    height: auto;
+
     background-color: #0b0b0b;
     border: 2px solid #333;
+    border-radius: 8px; /* Optional: gives a more modern look */
 }
