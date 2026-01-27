@@ -33,10 +33,14 @@ html, body {
 
 /* 3. The Canvas */
 #game-canvas {
+    touch-action: none;
     display: block;
     margin: 20px auto;
-    width: 95vw;
-    max-width: 500px;
+
+    /* CHANGE THIS: Remove 95vw and let JS dictate the size */
+    width: auto;
+    max-width: 90%;
+
     height: auto;
     background-color: #0b0b0b;
     border: 2px solid #333;

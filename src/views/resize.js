@@ -1,16 +1,20 @@
 export function resize(canvas, grid, options, pixelRatio) {
-  const margin = 20;
-  // Calculate the maximum width the grid can take
-  const maxWidth = window.innerWidth - (margin * 2);
+  // 1. Increase the available width for mobile (e.g., 90% of screen width)
+  const paddingMargin = 20;
+  const maxWidth = (window.innerWidth * 0.9) - (paddingMargin * 2);
 
-  // Dynamically adjust cellSize based on screen width
-  // 8 columns + padding between them
-  const availableWidth = Math.min(maxWidth, 500); // Caps size at 500px
+  // 2. Set a higher cap for desktop but let mobile go wider
+  // This prevents the grid from being a tiny sliver on a phone
+  const availableWidth = Math.min(maxWidth, 450);
+
+  // 3. Recalculate cell size based on the new available width
   options.cellSize = (availableWidth / 8) - options.padding;
 
   const gridWidth = 8 * (options.cellSize + options.padding) + options.padding;
-  // Account for the grid + tray area
-  const totalHeight = gridWidth + 200;
+
+  // 4. Ensure the tray has enough height for the blocks
+  const trayHeight = 220;
+  const totalHeight = gridWidth + trayHeight;
 
   canvas.width = gridWidth * pixelRatio;
   canvas.height = totalHeight * pixelRatio;
@@ -18,5 +22,5 @@ export function resize(canvas, grid, options, pixelRatio) {
   canvas.style.width = `${gridWidth}px`;
   canvas.style.height = `${totalHeight}px`;
 
-  return gridWidth; // Returns the vertical cutoff for the grid
+  return gridWidth;
 }
