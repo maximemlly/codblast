@@ -15,12 +15,15 @@ export class GameState {
         this.grid = new Grid();
         this.score = 0;
         this.gameOver = false;
+        this.streak = 0;
 
         // Contient les 3 blocs disponibles en bas
         this.offeredBlocks = [null, null, null];
 
         // Donne 3 blocs au joueur dès le début
         this.refreshBlocks();
+
+        this.highScore = parseInt(localStorage.getItem("codblast_highscore")) || 0;
     }
 
     /**
@@ -77,5 +80,9 @@ export class GameState {
      */
     updateScore(points) {
         this.score += points;
+        if(this.score > this.highScore) {
+            this.highScore = this.score;
+            localStorage.setItem('codblast_highscore', this.highScore)
+        }
     }
 }
