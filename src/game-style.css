@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    background-color: #0b0b0b; /* Match your bgColor option */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#game-canvas {
+    /* This ensures the canvas takes up space */
+    width: 90vw;
+    max-width: 500px;
+    height: 70vh;
+    border: 1px solid #333;
+    display: block;
+}
+
+#game-canvas {
+    width: 100%;
+    max-width: 500px; /* Adjust based on your preference */
+    height: 600px;    /* Give it a fixed height or use vh */
+    display: block;
+    margin: 0 auto;
+    background-color: #0b0b0b;
+    border: 2px solid #333;
+}

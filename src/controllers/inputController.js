@@ -43,37 +43,44 @@ export class InputController {
         if (!this.draggingBlock) return;
         const rect = this.view.canvas.getBoundingClientRect();
 
-        this.mouseX = e.clientX - rect.left;
-        this.mouseY = e.clientY - rect.top;
+        const mouseX = (e.clientX - rect.left) * (this.view.canvas.width / rect.width) / this.view.pixelRatio;
+        const mouseY = (e.clientY - rect.top) * (this.view.canvas.height / rect.height) / this.view.pixelRatio;
+
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+
+        const offSetX = (this.draggingBlock.shape[0].length * this.view.options.cellSize) / 2;
+        const offsetY = (this.draggingBlock.shape.length * this.view.options.cellSize) / 2;
+
+        const dropCell = this.view.screenToCell(mouseX - offsetX, mouseY - offsetY);
 
         this.view.render(this);
-
-        const cell = this.view.screenToCell(this.mouseX, this.mouseY);
-        if (cell) {
-            this.view.highlightCell(cell.row, cell.col);
+        if(dropCell) {
+            this.view.highlightCell(dropCell.row, dropCell.col);
         }
     }
 
     handleUp(e) {
         if (!this.draggingBlock) return;
 
-        const rect = this.view.canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        const cell = this.view.screenToCell(mouseX, mouseY);
+        const offsetX = (this.draggingBlock.shape[0].length * this.view.options.cellSize) / 2;
+        const offsetY = (this.draggingBlock.shape.length * this.view.options.cellSize) / 2;
+        const cell = this.view.screenToCell(this.mouseX - offsetX, this.mouseY - offsetY);
 
         if (cell) {
             const shape = this.draggingBlock.shape;
             const color = this.draggingBlock.color;
 
+            // 1. Check if placement is valid
             if (this.state.grid.placeBlockCheck(shape, cell.col, cell.row)) {
+
+                // 2. ACTUALLY place the block (You were missing this call!)
                 this.state.grid.placeBlock(shape, cell.col, cell.row, color);
+
+                // 3. Remove it from the tray
                 this.state.offeredBlocks[this.dragIndex] = null;
 
-                if (this.state.offeredBlocks.every(b => b === null)) {
-                    this.state.refreshBlocks();
-                }
-
+                // 4. Trigger the end of turn logic
                 this.gameController.handleTurnEnd();
             }
         }
