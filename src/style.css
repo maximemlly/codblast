@@ -72,8 +72,8 @@ p {
 #page {
   display: flex;
   flex-direction: column;
-  margin-top: 8rem;
-  padding-top: 8rem;
+  margin-top: 0;
+  padding-top: 500px;
   padding-bottom: 8rem;
 }
 
