@@ -32,7 +32,7 @@ export class GameState {
     refreshBlocks() {
         // Liste des classes de blocs disponibles
         const blockClasses = [Horizontal, LShape, Single, SquareBlock, TShape, Vertical];
-        const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF'];
+        const colors = ['#006769', '#40A578', '#9DDE8B', '#E6FF94'];
 
         for (let i = 0; i < 3; i++) {
             // Remplace seulement les blocs qui sont utilisés (donc null)

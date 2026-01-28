@@ -49,7 +49,7 @@ export class InputController {
         this.mouseX = mouseX;
         this.mouseY = mouseY;
 
-        const offSetX = (this.draggingBlock.shape[0].length * this.view.options.cellSize) / 2;
+        const offsetX = (this.draggingBlock.shape[0].length * this.view.options.cellSize) / 2;
         const offsetY = (this.draggingBlock.shape.length * this.view.options.cellSize) / 2;
 
         const dropCell = this.view.screenToCell(mouseX - offsetX, mouseY - offsetY);

@@ -11,16 +11,26 @@
       rel="stylesheet"
     />
     <link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
+    <link rel="stylesheet" href="/src/style.css" />
     <title>COD'BLAST!</title>
   </head>
   <body>
-    <ul id="navbar"></ul>
+    <div class="menu-overlay"></div>
+    <header class="header">
+      <ul id="navbar" class="nav"></ul>
+      <button class="menu-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
     <div id="page">
       <div id="app">
         <canvas id="board-canvas" aria-label="board-canvas"></canvas>
       </div>
       <footer id="credits"></footer>
     </div>
+    <script src="/src/burgerMenu.js"></script>
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/common.js"></script>
   </body>

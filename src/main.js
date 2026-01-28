@@ -11,7 +11,7 @@ app.innerHTML = `
     <p>Welcome to</p>
     <h1>COD'BLAST</h1>
   </div>
-  <p id="subtitle">Current Highscore: <strong>${highscore}</strong></p>
+  <p id="subtitle">Current Highscore: <span>${highscore}</span></p>
   <button id="start-button">Start Game</button>
 `;
 
