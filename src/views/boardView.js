@@ -1,11 +1,13 @@
 import {drawShape} from './blockView.js';
 import {resize} from './resize.js';
+import {Particle} from './particle.js';
 
 export class BoardView {
   constructor(canvas, gridModel, options) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.grid = gridModel;
+    this.particles = [];
 
     this.gridHeight = 0;
 
@@ -72,10 +74,38 @@ export class BoardView {
     ctx.restore();
   }
 
+  explodeLine(type, index) {
+    const size = this.options.cellSize;
+    const pdg = this.options.padding;
+
+    for (let i = 0; i < 8; i++) {
+      let x, y, color;
+      if (type === 'row') {
+        x = pdg + i * (size + pdg) + size / 2;
+        y = pdg + index * (size + pdg) + size / 2;
+        color = this.grid.cells[index][i]?.color || "#fff";
+      } else {
+        x = pdg + index * (size + pdg) + size / 2;
+        y = pdg + i * (size + pdg) + size / 2;
+        color = this.grid.cells[i][index]?.color || "#fff";
+      }
+
+      // Create 10 particles per cell in the line
+      for (let j = 0; j < 10; j++) {
+        this.particles.push(new Particle(x, y, color));
+      }
+    }
+  }
+
   render(inputController = null) {
     this.clear();
     this.drawGrid();
     this.drawBlocks();
+    this.particles = this.particles.filter(p => p.life > 0);
+    this.particles.forEach(p => {
+      p.update();
+      p.draw(this.ctx);
+    });
     this.drawTray();
 
     if (inputController && inputController.draggingBlock) {
