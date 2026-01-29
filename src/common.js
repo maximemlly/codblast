@@ -6,7 +6,7 @@ document.querySelector("#credits").innerHTML = `
 
 const navContent = `
 <li><a href="index.html" id="home-button">Home</a></li>
-<li><a href="" id="player-stats-button">Your Stats</a></li>
+<li><a href="stats.html" id="player-stats-button">Your Stats</a></li>
 <li><a href="about.html" id="about-button">About</a></li>
 `;
 
