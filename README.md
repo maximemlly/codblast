@@ -26,6 +26,6 @@ Il s'agit d'un jeu de réflexion où l'on dispose des pièces sur une grille pou
 ## 👥 Contributeurs
 | Profil | Membre | Rôle |
 | :---: | :--- | :--- |
-| <a href="https://github.com/maximemlly"><img src="https://github.com/maximemlly.png" width="50"></a> | [**@maximemlly**](https://github.com/maximemlly) | 🖥️ Logique / Gameplay |
-| <a href="https://github.com/thegesse"><img src="https://github.com/thegesse.png" width="50"></a> | [**@thegesse**](https://github.com/thegesse) | 🖥️ Views / MVC |
+| <a href="https://github.com/maximemlly"><img src="https://github.com/maximemlly.png" width="50"></a> | [**@maximemlly**](https://github.com/maximemlly) | 🖥️ Views / Assets |
+| <a href="https://github.com/thegesse"><img src="https://github.com/thegesse.png" width="50"></a> | [**@thegesse**](https://github.com/thegesse) | 🖥️ Logique / Gameplay |
 | <a href="https://github.com/devilishlyney"><img src="https://github.com/devilishlyney.png" width="50"></a> | [**@devilishlyney**](https://github.com/devilishlyney) | 🎨 Intégration / Responsive |
