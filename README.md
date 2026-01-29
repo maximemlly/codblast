@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/logo.png" alt="Bannière du Jeu" width="50%">
+  <img src="public/logo.png" alt="Bannière du Jeu" width="75%">
 </div>
 <br>
 
