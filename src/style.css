@@ -139,7 +139,7 @@ p > span {
   padding-bottom: 90px;
   display: none;
   justify-content: space-evenly;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   background-image: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0));
 }
