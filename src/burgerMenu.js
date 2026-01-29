@@ -1,41 +1,53 @@
 // Gestion du menu burger
-const menuToggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.nav');
+const menuToggle = document.querySelector('.menu-toggle-mobile');
+const nav = document.querySelector('.nav-mobile');
 const menuOverlay = document.querySelector('.menu-overlay');
 
 // Fonction pour ouvrir/fermer le menu
 function toggleMenu() {
-    nav.classList.toggle('active');
-    menuToggle.classList.toggle('active');
-    menuOverlay.classList.toggle('active');
+    if (nav && menuToggle && menuOverlay) {
+        nav.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
 
-    // Empêcher le scroll du body quand le menu est ouvert
-    if (nav.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
+        // Empêcher le scroll du body quand le menu est ouvert
+        if (nav.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     }
 }
 
 // Fonction pour fermer le menu
 function closeMenu() {
-    nav.classList.remove('active');
-    menuToggle.classList.remove('active');
-    menuOverlay.classList.remove('active');
-    document.body.style.overflow = '';
+    if (nav && menuToggle && menuOverlay) {
+        nav.classList.remove('active');
+        menuToggle.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
 
 // Ouvrir/fermer le menu avec le bouton burger
-menuToggle.addEventListener('click', toggleMenu);
+if (menuToggle) {
+    menuToggle.addEventListener('click', toggleMenu);
+}
 
 // Fermer le menu quand on clique sur l'overlay
-menuOverlay.addEventListener('click', closeMenu);
+if (menuOverlay) {
+    menuOverlay.addEventListener('click', closeMenu);
+}
 
-// Fermer le menu quand on clique sur un lien
-const navLinks = document.querySelectorAll('.nav a');
-navLinks.forEach(link => {
-    link.addEventListener('click', closeMenu);
-});
+// Close menu when clicking a link (without preventing default)
+if (nav) {
+    nav.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            // Just close the menu, let the link navigate naturally
+            closeMenu();
+        }
+    }, false);
+}
 
 // Gestion du header qui se cache au scroll
 let lastScrollY = window.scrollY;
