@@ -3,6 +3,7 @@
 </div>
 <br>
 
+
 # COD'BLAST
 ### Par Emery P. Maxime M. et Esteban Q.
 
@@ -13,6 +14,7 @@
   <br>
   <img src="https://img.shields.io/badge/Canvas_API-Graphismes_2D-0052CC?style=for-the-badge" alt="Canvas API Graphismes">
 </p>
+
 ## 🎯 Principe du jeu
 Cod'Blast est inspiré du très célèbre jeu **[Block Blast](https://block-blast.io/)**.
 <br>
