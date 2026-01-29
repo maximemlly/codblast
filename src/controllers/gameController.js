@@ -1,26 +1,24 @@
-// gameController.js
 export class GameController {
     constructor(state, view) {
+        // gameState pour la data du jeu, et boardView pour les graphism
         this.state = state;
         this.view = view;
     }
-
+    // trigger aprés qu'un block est placer
     handleTurnEnd() {
-        // 1. Identify which lines need clearing WITHOUT clearing them yet
-        // This requires the getLinesToClear() helper in your Grid class
+        // method du grid.js qui regarde l'array pour chercher des lignes completer
         const cleared = this.state.grid.getLinesToClear();
         const lineCount = cleared.rows.length + cleared.cols.length;
 
         if (lineCount > 0) {
-            // 2. TRIGGER ANIMATIONS
-            // We do this while the grid cells still contain their color data
+            // trigger les animations
             cleared.rows.forEach(index => this.view.explodeLine('row', index));
             cleared.cols.forEach(index => this.view.explodeLine('col', index));
 
-            // 3. NOW ACTUALLY CLEAR THE GRID
+            // appell method depuis grid.js qui change les cases des grille qui sont clear en null
             this.state.grid.checkAndClearLines();
 
-            // --- 4. SCORING LOGIC ---
+            // logic des points
             let turnPoints = lineCount * 80;
 
             if (lineCount > 1) {
@@ -36,17 +34,16 @@ export class GameController {
             this.state.score += turnPoints;
         } else {
             this.state.streak = 0;
-            // No lines cleared? Just run the standard check
             this.state.grid.checkAndClearLines();
         }
 
-        // 5. Refresh tray if empty
+        // regarde si les 3 blocks on ete utiliser et si il est en remet 3 autres aleatoirement
         if (this.state.offeredBlocks.every(b => b === null)) {
             this.state.refreshBlocks();
             this.state.grid.offeredBlocks = this.state.offeredBlocks;
         }
 
-        // 6. Loss Check
+        // algo trouver en ligne et adapter pour regarder toutes les positions possibles et regarde si on peut jouer ou pas
         const playableBlocks = this.state.offeredBlocks.filter(block => block !== null);
         const canStillPlay = playableBlocks.some(block =>
             this.state.grid.canFitAnywhere(block.shape)
@@ -55,16 +52,18 @@ export class GameController {
         if (!canStillPlay) {
             this.triggerGameOver();
         }
-
+        // method du boardview qui met a jour le canvas
         this.view.render();
     }
 
     triggerGameOver() {
+        // utilise local storage pour enregistrer la data/ score total pour avoir un high score qui persiste
         const currentHighscore = parseInt(localStorage.getItem('codblast_highscore')) || 0;
         if (this.state.score > currentHighscore) {
             localStorage.setItem('codblast_highscore', this.state.score);
         }
         alert(`Game Over! Final Score: ${this.state.score}`);
+        //nous renvoie au main menu apres une defaite
         window.location.href = "index.html";
     }
 }

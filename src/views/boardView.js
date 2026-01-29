@@ -5,12 +5,12 @@ import {Particle} from './particle.js';
 export class BoardView {
   constructor(canvas, gridModel, options) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
+    this.ctx = canvas.getContext("2d"); // le "stylo" utiliser pour dessiner sur canvas
     this.grid = gridModel;
-    this.particles = [];
+    this.particles = []; // sert pour les particules pour l'explosion
 
-    this.gridHeight = 0;
-
+    this.gridHeight = 0; // cherche la hauteur en pixel de la grille 8x8
+    // style par default
     this.options = Object.assign(
       {
         cellSize: 48,
@@ -22,24 +22,26 @@ export class BoardView {
       },
       options,
     );
-
+    // sert a ne pas rendre le jeu flou sur les ecrans modern
     this.pixelRatio = Math.max(1, window.devicePixelRatio || 1);
     this.resizeObserver = null;
     this.clickHandler = null;
 
     this.setup();
   }
-
+  // fait la taille par defaut
   setup() {
     this.resizeObserver = () => this.resize();
     this.applyPixelRatio();
     this.resizeObserver();
+    // regarde si la taille change pour garder le jeu responsive
     window.addEventListener("resize", this.resizeObserver);
     this.canvas.addEventListener(
       "click",
       (e) => {
         if (this.clickHandler) {
           const rect = this.canvas.getBoundingClientRect();
+          // converti le click de la souri en pixel vers des unités canvas
           const x = (e.clientX - rect.left) * (this.canvas.width / rect.width);
           const y = (e.clientY - rect.top) * (this.canvas.height / rect.height);
           const cell = this.screenToCell(x, y);
@@ -60,7 +62,7 @@ export class BoardView {
     this.applyPixelRatio();
     this.render();
   }
-
+  // vide le canvas en preparation de la prochaine frame
   clear() {
     const ctx = this.ctx;
     ctx.save();
@@ -73,13 +75,14 @@ export class BoardView {
     );
     ctx.restore();
   }
-
+  // spawn les particules pour l'effet du clear line
   explodeLine(type, index) {
     const size = this.options.cellSize;
     const pdg = this.options.padding;
 
     for (let i = 0; i < 8; i++) {
       let x, y, color;
+      // calcule la centre de chaque cellule dans la zone qui a ete "cleared"
       if (type === 'row') {
         x = pdg + i * (size + pdg) + size / 2;
         y = pdg + index * (size + pdg) + size / 2;
@@ -90,31 +93,33 @@ export class BoardView {
         color = this.grid.cells[i][index]?.color || "#fff";
       }
 
-      // Create 10 particles per cell in the line
+      // crée 10 particule custom pour chaque cellule dans la ligne
       for (let j = 0; j < 10; j++) {
         this.particles.push(new Particle(x, y, color));
       }
     }
   }
-
+  // est utiliser chaque fois que l'ecran se met a jour
   render(inputController = null) {
-    this.clear();
-    this.drawGrid();
-    this.drawBlocks();
+    this.clear();     // vide l'ecran
+    this.drawGrid();  // dessine la grille
+    this.drawBlocks();// dessine les blocks deja placer
+
+    // met a jour et dessine chaque particule active et enleve les particules qui sont "morte"
     this.particles = this.particles.filter(p => p.life > 0);
     this.particles.forEach(p => {
       p.update();
       p.draw(this.ctx);
     });
-    this.drawTray();
+    this.drawTray();  // dessine les blocks que le joueur peut utiliser en bas de la grille
 
+    // check pour voir si l'utilisateur tien un block
     if (inputController && inputController.draggingBlock) {
       const { draggingBlock, mouseX, mouseY } = inputController;
       const size = this.options.cellSize;
-
+      // offeset pour avoir le centre du block sous le doigt
       const offsetX = (draggingBlock.shape[0].length * size) / 2;
       const offsetY = (draggingBlock.shape.length * size) / 2;
-
       // Calculate where the block is being held
       const startX = mouseX - offsetX;
       const startY = mouseY - offsetY;
@@ -132,7 +137,7 @@ export class BoardView {
       drawShape(this.ctx, draggingBlock.shape, startX, startY, size, this.options.padding, draggingBlock.color, 0.7);
     }
   }
-
+  // dessine la boite sous la grille pour afficher les 3 blocks disponible a l'utilisateur
   drawTray() {
     const trayY = this.gridHeight + 20; // Start below the grid
     const slotWidth = (this.canvas.width / this.pixelRatio) / 3;
@@ -184,6 +189,7 @@ export class BoardView {
         ctx.lineTo(pdg + cols * (cell + pdg), y);
         ctx.stroke();
       }
+      // vertical lines
       for (let c = 0; c <= cols; c++) {
         const x = pdg + c * (cell + pdg) + 0.5;
         ctx.beginPath();
@@ -221,7 +227,7 @@ export class BoardView {
     }
     ctx.restore();
   }
-
+  // transform les pixels en grid indices
   screenToCell(px, py) {
     const opt = this.options;
     const cell = opt.cellSize;

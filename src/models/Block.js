@@ -1,5 +1,5 @@
 export class Block {
-    //couleur prefaite
+    //couleur par defaut, qui est changer apres
     #color = "green";
     #shape;
     constructor(color, shape) {

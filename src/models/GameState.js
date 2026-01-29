@@ -1,6 +1,5 @@
-// models/gameState.js
 import { Grid } from "./Grid.js";
-// Import all your specific block classes here
+// import de toutes les formes de block utiliser dans le jeu
 import {Horizontal} from "./Horizontal.js";
 import {LShape} from "./LShape.js";
 import {Single} from "./Single.js";
@@ -26,12 +25,13 @@ export class GameState {
         this.highScore = parseInt(localStorage.getItem("codblast_highscore")) || 0;
     }
 
-    /**
-     * Remplit les emplacements vides avec de nouveaux blocs aléatoires
-     */
+
+     //Remplit les emplacements vides avec de nouveaux blocs aléatoires
+
     refreshBlocks() {
         // Liste des classes de blocs disponibles
         const blockClasses = [Horizontal, LShape, Single, SquareBlock, TShape, Vertical];
+        // contient les couleurs choisit
         const colors = ['#006769', '#40A578', '#9DDE8B', '#E6FF94'];
 
         for (let i = 0; i < 3; i++) {
@@ -47,9 +47,9 @@ export class GameState {
         }
     }
 
-    /**
-     * Vérifie si le joueur peut encore placer au moins un des blocs disponibles
-     */
+
+     //Vérifie si le joueur peut encore placer au moins un des blocs disponibles
+
     checkGameOver() {
         // Regarde seulement les blocs encore non joués
         const playableBlocks = this.offeredBlocks.filter(b => b !== null);
@@ -75,9 +75,9 @@ export class GameState {
         return true;
     }
 
-    /**
-     * Met à jour le score du joueur
-     */
+
+     // Met à jour le score du joueur
+
     updateScore(points) {
         this.score += points;
         if(this.score > this.highScore) {
