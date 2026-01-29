@@ -116,7 +116,7 @@ h2 {
   font-family: "Bungee";
 }
 
-span {
+p > span {
   background-image: linear-gradient(to bottom, #646cff, white);
   -webkit-background-clip: text;
   background-clip: text;
@@ -139,17 +139,17 @@ span {
   padding-bottom: 90px;
   display: none;
   justify-content: space-evenly;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   background-image: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0));
 }
 
 #navbar {
   position: fixed;
-  justify-content: space-evenly;
-  flex-direction: row;
-  width: 100%;
-  background-image: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0));
+  justify-content: center;
+  flex-direction: column;
+  width: 60%;
+  background-image: linear-gradient(to bottom, #171717, rgba(36, 36, 36, 0));
   margin: 0;
   padding: 30px;
   padding-bottom: 90px;
@@ -177,27 +177,30 @@ span {
     flex-direction: column;
     justify-content: space-around;
     cursor: pointer;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
-    border: none;
-    padding: 12px;
+
+    padding: 8px;
     position: relative;
     z-index: 102 !important;
-    width: 100px;
-    height: 75px;
+    width: 50px;
+    height: 40px;
     flex-shrink: 0;
     margin-left: auto;
+    margin-right: 10px;
+    margin-top: 5px;
 }
 
 .menu-toggle span {
     display: block;
-    width: 80px;
-    height: 10px;
+    width: 30px;
+    height: 3px;
     background-color: #646cff;
     color: white;
     border-radius: 2px;
     transition: all 0.3s ease;
     transform-origin: center;
+    z-index: 103;
 }
 
 /* Burger menu animation */
