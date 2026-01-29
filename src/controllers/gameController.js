@@ -57,13 +57,16 @@ export class GameController {
     }
 
     triggerGameOver() {
-        // utilise local storage pour enregistrer la data/ score total pour avoir un high score qui persiste
+
         const currentHighscore = parseInt(localStorage.getItem('codblast_highscore')) || 0;
         if (this.state.score > currentHighscore) {
             localStorage.setItem('codblast_highscore', this.state.score);
         }
+        let totalGames = parseInt(localStorage.getItem('codblast_games_played')) || 0;
+        totalGames++;
+        localStorage.setItem('codblast_games_played', totalGames);
+
         alert(`Game Over! Final Score: ${this.state.score}`);
-        //nous renvoie au main menu apres une defaite
         window.location.href = "index.html";
     }
 }
