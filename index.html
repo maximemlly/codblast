@@ -11,17 +11,29 @@
       rel="stylesheet"
     />
     <link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
+    
     <title>COD'BLAST!</title>
-    <script type="module" crossorigin src="/codblast/assets/index-BFi2Pr5x.js"></script>
-    <link rel="stylesheet" crossorigin href="/codblast/assets/index-CJ197gQS.css">
+    <script type="module" crossorigin src="/codblast/assets/main-dkrt6YlB.js"></script>
+    <link rel="modulepreload" crossorigin href="/codblast/assets/common-pjiY56_e.js">
+    <link rel="stylesheet" crossorigin href="/codblast/assets/common-3EIwdXa8.css">
   </head>
   <body>
-    <ul id="navbar"></ul>
+    <div class="menu-overlay"></div>
+    <header class="header">
+      <ul id="navbar" class="nav nav-desktop"></ul>
+      <ul class="nav nav-mobile"></ul>
+      <button class="menu-toggle menu-toggle-mobile" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
     <div id="page">
       <div id="app">
         <canvas id="board-canvas" aria-label="board-canvas"></canvas>
       </div>
       <footer id="credits"></footer>
     </div>
+    <script src="/src/burgerMenu.js"></script>
   </body>
 </html>

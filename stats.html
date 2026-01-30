@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+        href="https://fonts.googleapis.com/css2?family=Bungee&family=Geo:ital@0;1&display=swap"
+        rel="stylesheet"
+        />
+        <link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
+        
+        <title>Player Stats</title>
+      <script type="module" crossorigin src="/codblast/assets/common-pjiY56_e.js"></script>
+      <link rel="stylesheet" crossorigin href="/codblast/assets/common-3EIwdXa8.css">
+    </head>
+    <body>
+    
+        <div class="menu-overlay"></div>
+
+    <header class="header">
+        <ul id="navbar" class="nav nav-desktop"></ul>
+        <ul class="nav nav-mobile"></ul>
+        <button class="menu-toggle menu-toggle-mobile" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+    <div id="page">
+        <div id="app">
+            <div class="stats-container">
+                <h1>PLAYER STATS</h1>
+
+                <section id="user-stats">
+                    <div class="stat-card">
+                        <h2 class="label">HIGHEST SCORE</h2>
+                        <h2 id="high-score" class="value">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <h2 class="label">GAMES PLAYED</h2>
+                        <h2 id="games-played" class="value">0</h2>
+                    </div>
+                </section>
+                <button onclick="window.location.href='index.html'">BACK TO MENU</button>
+            </div>
+            
+        </div>
+        <footer id="credits"></footer>
+    </div>
+        <script src="/src/burgerMenu.js"></script>
+    </body>
+</html>
