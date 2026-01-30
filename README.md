@@ -21,7 +21,7 @@ Cod'Blast est inspiré du très célèbre jeu **[Block Blast](https://block-blas
 Il s'agit d'un jeu de réflexion où l'on dispose des pièces sur une grille pour effacer des lignes et des colonnes. L'objectif est d'optimiser l'espace stratégiquement pour enchaîner les combos et obtenir le plus haut score.
 <br><br>
 **Système de points :**
-- Vous gagnez 100 points par ligne complétée.
+- Vous gagnez 80 points par ligne complétée.
 - Vous gagnez +50 points pour deux lignes complétées simultanémment.
 
 ## 📥 Installation
